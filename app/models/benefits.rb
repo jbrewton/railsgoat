@@ -11,7 +11,8 @@ class Benefits < ActiveRecord::Base
 
   def self.make_backup(file, data_path, full_file_name)
     if File.exists?(full_file_name)
-      silence_streams(STDERR) { system("cp #{full_file_name} #{data_path}/bak#{Time.zone.now.to_i}_#{file.original_filename}") }
+      FileUtils.cp "#{full_file_name}", "#{data_path}/bak#{Time.zone.now.to_i}_#{file.original_filename}"
+      # (o_o) # silence_streams(STDERR) { system("cp #{full_file_name} #{data_path}/bak#{Time.zone.now.to_i}_#{file.original_filename}") }
     end
   end
 
@@ -21,16 +22,16 @@ class Benefits < ActiveRecord::Base
   end
 =end
 
-  def self.silence_streams(*streams)
-    on_hold = streams.collect { |stream| stream.dup }
-    streams.each do |stream|
-      stream.reopen(RUBY_PLATFORM =~ /mswin/ ? 'NUL:' : '/dev/null')
-      stream.sync = true
-    end
-    yield
-  ensure
-    streams.each_with_index do |stream, i|
-      stream.reopen(on_hold[i])
-    end
-  end
+  # def self.silence_streams(*streams)
+  #   on_hold = streams.collect { |stream| stream.dup }
+  #   streams.each do |stream|
+  #     stream.reopen(RUBY_PLATFORM =~ /mswin/ ? 'NUL:' : '/dev/null')
+  #     stream.sync = true
+  #   end
+  #   yield
+  # ensure
+  #   streams.each_with_index do |stream, i|
+  #     stream.reopen(on_hold[i])
+  #   end
+  # end
 end
