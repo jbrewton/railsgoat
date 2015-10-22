@@ -52,11 +52,11 @@ class User < ActiveRecord::Base
   def self.authenticate(email, password)
     auth = nil
     user = find_by_email(email)
-    raise "#{email} doesn't exist!" if !(user)
+    raise I18n.t('ambiguous_login_error') if !(user)
     if user.password == Digest::MD5.hexdigest(password)
       auth = user
     else
-      raise "Incorrect Password!"
+      raise I18n.t('ambiguous_login_error')
     end
     return auth
   end
