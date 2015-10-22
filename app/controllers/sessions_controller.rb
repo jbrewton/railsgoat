@@ -25,8 +25,8 @@ class SessionsController < ApplicationController
       redirect_to path
     else
       # Removed this code, just doesn't seem specific enough!
-      # flash[:error] = "Either your username and password is incorrect"
-      flash[:error] = e.message
+      flash[:error] = "Password or email wrong it is."
+      # flash[:error] = e.message
       render "new"
     end
   end
