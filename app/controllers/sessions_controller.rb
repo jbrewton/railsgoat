@@ -8,6 +8,7 @@ class SessionsController < ApplicationController
   end
 
   def create
+    # redirecting to a param url is bad, making this relative is probably a good idea
     path = params[:url].present? ? params[:url] : home_dashboard_index_path
     begin
       # Normalize the email address, why not
@@ -25,8 +26,8 @@ class SessionsController < ApplicationController
       redirect_to path
     else
       # Removed this code, just doesn't seem specific enough!
-      # flash[:error] = "Either your username and password is incorrect"
-      flash[:error] = e.message
+      flash[:error] = I18n.t('ambiguous_login_error')
+      # flash[:error] = e.message
       render "new"
     end
   end

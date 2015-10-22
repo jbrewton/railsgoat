@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  before_action :administrative, :if => :admin_param, :except => [:get_user]
+  before_action :administrative
   skip_before_filter :has_info
 
   def dashboard
@@ -9,9 +9,9 @@ class AdminController < ApplicationController
     if params[:field].nil?
       fields = "*"
     else
-      fields = params[:field].map {|k,v| k }.join(",")
+      # fields = params[:field].map {|k,v| k }.join(",")
       # This seems to be a bit safer
-      #fields = params[:field].map {|k,v| Analytics.parse_field(k) }.join(",")
+      fields = params[:field]
     end
 
     if params[:ip]

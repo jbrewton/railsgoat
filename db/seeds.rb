@@ -6,8 +6,8 @@ users = [
      {
        :email => "admin@metacorp.com", 
        :admin => true, 
-       :password => "admin1234", 
-       :password_confirmation => "admin1234", 
+       :password => "J8R5poxoCp$JdJ36", 
+       :password_confirmation => "J8R5poxoCp$JdJ36", 
        :first_name => "Admin", 
        :last_name => "", 
        :user_id =>1 
@@ -15,8 +15,8 @@ users = [
      {
        :email => "jack@metacorp.com", 
        :admin => false, 
-       :password => "yankeessuck", 
-       :password_confirmation => "yankeessuck", 
+       :password => "J8R5poxoCp$JdJ36", 
+       :password_confirmation => "J8R5poxoCp$JdJ36", 
        :first_name => "Jack", 
        :last_name => "Mannino", 
        :user_id => 2
@@ -24,8 +24,8 @@ users = [
      {
        :email => "jim@metacorp.com", 
        :admin => false, 
-       :password => "alohaowasp", 
-       :password_confirmation => "alohaowasp", 
+       :password => "J8R5poxoCp$JdJ36", 
+       :password_confirmation => "J8R5poxoCp$JdJ36", 
        :first_name => "Jim", 
        :last_name => "Manico", 
        :user_id =>3 
@@ -33,8 +33,8 @@ users = [
      {
        :email => "mike@metacorp.com", 
        :admin => false, 
-       :password => "motocross1445", 
-       :password_confirmation => "motocross1445", 
+       :password => "J8R5poxoCp$JdJ36", 
+       :password_confirmation => "J8R5poxoCp$JdJ36", 
        :first_name => "Mike", 
        :last_name => "McCabe", 
        :user_id =>4 
@@ -42,8 +42,8 @@ users = [
      {
        :email => "ken@metacorp.com", 
        :admin => false, 
-       :password => "citrusblend", 
-       :password_confirmation => "citrusblend", 
+       :password => "J8R5poxoCp$JdJ36", 
+       :password_confirmation => "J8R5poxoCp$JdJ36", 
        :first_name => "Ken", 
        :last_name => "Johnson", 
        :user_id =>5 
@@ -301,14 +301,12 @@ messages.each do |message|
   m.save
 end
 
-work_info.each do |wi|
-  info = WorkInfo.new(wi.reject {|k| k == :user_id } )
-  info.user_id = wi[:user_id]
-  info.save
-end
+# work_info.each do |wi|
+#   info = WorkInfo.new(wi.reject {|k| k == :user_id } )
+#   info.user_id = wi[:user_id]
+#   info.save
+# end
 
-
-=begin
 work_info.each do |wi|
   list = [:user_id, :SSN]
   info = WorkInfo.new(wi.reject {|k| list.include?(k)})
@@ -317,4 +315,3 @@ work_info.each do |wi|
   info.SSN = wi[:SSN]
   info.save
 end
-=end

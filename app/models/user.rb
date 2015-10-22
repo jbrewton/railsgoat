@@ -1,17 +1,18 @@
 require 'encryption'
 
 class User < ActiveRecord::Base
-  validates :password, :presence => true,
-                       :confirmation => true,
-                       :length => {:within => 6..40},
-                       :on => :create,
-                       :if => :password
-=begin
+  # validates :password, :presence => true,
+  #                      :confirmation => true,
+  #                      :length => {:within => 6..40},
+  #                      :on => :create,
+  #                      :if => :password
+
+  # I uh, assume this regex is right
   validates :password, :presence => true,
                         :confirmation => true,
                         :if => :password,
                         :format => {:with => /\A.*(?=.{10,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\@\#\$\%\^\&\+\=]).*\z/}
-=end
+
   validates_presence_of :email
   validates_uniqueness_of :email
   validates_format_of :email, :with => /.+@.+\..+/i
@@ -32,7 +33,7 @@ class User < ActiveRecord::Base
     build_paid_time_off(POPULATE_PAID_TIME_OFF.shuffle.first).schedule.build(POPULATE_SCHEDULE.shuffle.first)
     build_work_info(POPULATE_WORK_INFO.shuffle.first)
     # Uncomment below line to use encrypted SSN(s)
-    #work_info.build_key_management(:iv => SecureRandom.hex(32))
+    work_info.build_key_management(:iv => SecureRandom.hex(32))
     performance.build(POPULATE_PERFORMANCE.shuffle.first)
   end
 
@@ -51,12 +52,12 @@ class User < ActiveRecord::Base
 
   def self.authenticate(email, password)
     auth = nil
-    user = find_by_email(email)
-    raise "#{email} doesn't exist!" if !(user)
-    if user.password == Digest::MD5.hexdigest(password)
+    user = find_by_email(email) || User.new(password: "")
+
+    if ActiveSupport::SecurityUtils.secure_compare(user.password, Digest::MD5.hexdigest(password))
       auth = user
     else
-      raise "Incorrect Password!"
+      raise I18n.t('ambiguous_login_error')
     end
     return auth
   end
@@ -88,6 +89,8 @@ class User < ActiveRecord::Base
   def hash_password
     unless @skip_hash_password == true
       if password.present?
+        # MD5 is weak, should replace this with BCrypt or something.
+        # https://github.com/codahale/bcrypt-ruby
         self.password = Digest::MD5.hexdigest(password)
       end
     end
