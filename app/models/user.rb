@@ -1,17 +1,18 @@
 require 'encryption'
 
 class User < ActiveRecord::Base
-  validates :password, :presence => true,
-                       :confirmation => true,
-                       :length => {:within => 6..40},
-                       :on => :create,
-                       :if => :password
-=begin
+  # validates :password, :presence => true,
+  #                      :confirmation => true,
+  #                      :length => {:within => 6..40},
+  #                      :on => :create,
+  #                      :if => :password
+
+  # I uh, assume this regex is right
   validates :password, :presence => true,
                         :confirmation => true,
                         :if => :password,
                         :format => {:with => /\A.*(?=.{10,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\@\#\$\%\^\&\+\=]).*\z/}
-=end
+
   validates_presence_of :email
   validates_uniqueness_of :email
   validates_format_of :email, :with => /.+@.+\..+/i
