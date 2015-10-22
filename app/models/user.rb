@@ -51,9 +51,9 @@ class User < ActiveRecord::Base
 
   def self.authenticate(email, password)
     auth = nil
-    user = find_by_email(email)
-    raise I18n.t('ambiguous_login_error') if !(user)
-    if user.password == Digest::MD5.hexdigest(password)
+    user = find_by_email(email) || User.new(password: "")
+
+    if ActiveSupport::SecurityUtils.secure_compare(user.password, Digest::MD5.hexdigest(password))
       auth = user
     else
       raise I18n.t('ambiguous_login_error')
