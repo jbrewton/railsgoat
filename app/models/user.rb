@@ -89,6 +89,8 @@ class User < ActiveRecord::Base
   def hash_password
     unless @skip_hash_password == true
       if password.present?
+        # MD5 is weak, should replace this with BCrypt or something.
+        # https://github.com/codahale/bcrypt-ruby
         self.password = Digest::MD5.hexdigest(password)
       end
     end
