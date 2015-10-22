@@ -8,6 +8,7 @@ class SessionsController < ApplicationController
   end
 
   def create
+    # redirecting to a param url is bad, making this relative is probably a good idea
     path = params[:url].present? ? params[:url] : home_dashboard_index_path
     begin
       # Normalize the email address, why not
